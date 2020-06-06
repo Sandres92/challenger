@@ -43,12 +43,11 @@ public class MainController {
     @Value("${upload.path}")
     private String uploadPath;
 
+    int postCount = 0;
+
     @GetMapping
     public List<Post> list() {
         System.out.println("Get all success");
-
-        System.out.println("=========== list");
-        System.out.println(posts.size());
 
         return posts;
     }
@@ -73,7 +72,9 @@ public class MainController {
 
     @PostMapping
     public Post create(@RequestParam("text") String text, @RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("Post success");
+
+        System.out.println("Post success  " + postCount);
+        postCount++;
         System.out.println(text);
         System.out.println(file.getOriginalFilename());
 
@@ -99,7 +100,19 @@ public class MainController {
                 uploadDir.mkdir();
             }
             String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+            System.out.println(file.getSize());
+            System.out.println(file.getContentType());
+
+            int index = file.getOriginalFilename().lastIndexOf(".");
+            String ext = file.getOriginalFilename().substring(index);
+            String name = file.getOriginalFilename();
+
+            if(".dat".equals(ext)){
+                name = file.getOriginalFilename().substring(0,index)+".jpg";
+            }
+
+            String resultFilename = (uuidFile + "." + name).replace("\\s", "");
             file.transferTo(new File(uploadPath + "/" + resultFilename));
 
             return resultFilename;
