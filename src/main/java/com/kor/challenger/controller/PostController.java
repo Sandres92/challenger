@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.*;
 
 @RestController
-@RequestMapping("message")
-public class MainController {
+@RequestMapping("post")
+public class PostController {
     private int counter = 4;
 
     /*private List<Map<String, String>> messages = new ArrayList<Map<String, String>>() {{
@@ -46,20 +46,20 @@ public class MainController {
     int postCount = 0;
 
     @GetMapping
-    public List<Post> list() {
+    public List<Post> getListPosts() {
         System.out.println("Get all success");
 
         return posts;
     }
 
     @GetMapping("{id}")
-    public Post listItem(@PathVariable("id") Long id) {
+    public Post getOnePost(@PathVariable("id") Long id) {
         System.out.println("Get one success");
         System.out.println("id   =   " + id);
-        return getMessage(id);
+        return getPost(id);
     }
 
-    private Post getMessage(@PathVariable Long id) {
+    private Post getPost(@PathVariable Long id) {
        /* return messages.stream()
                 .filter(message -> message.get("id").equals(id))
                 .findFirst()
@@ -71,7 +71,7 @@ public class MainController {
     }
 
     @PostMapping
-    public Post create(@RequestParam("text") String text, @RequestParam("file") MultipartFile file) throws IOException {
+    public Post createPost(@RequestParam("text") String text, @RequestParam("file") MultipartFile file) throws IOException {
 
         System.out.println("Post success  " + postCount);
         postCount++;
@@ -133,12 +133,12 @@ public class MainController {
     }*/
 
     @PutMapping("{id}")
-    public Post edit(@PathVariable Long id, @RequestBody Post post) {
+    public Post editPost(@PathVariable Long id, @RequestBody Post post) {
         System.out.println("put success");
         System.out.println(post.getId());
         System.out.println(post.getText());
 
-        Post postTemp = getMessage(id);
+        Post postTemp = getPost(id);
         int indexPost = posts.indexOf(postTemp);
         post.setId(postTemp.getId());
         posts.set(indexPost, post);
@@ -147,11 +147,11 @@ public class MainController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id) {
+    public void deletePost(@PathVariable Long id) {
         System.out.println("delete success");
         System.out.println(id);
 
-        Post postTemp = getMessage(id);
+        Post postTemp = getPost(id);
         int indexPost = posts.indexOf(postTemp);
 
         posts.remove(indexPost);
