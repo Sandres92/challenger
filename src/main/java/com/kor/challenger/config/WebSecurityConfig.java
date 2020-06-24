@@ -1,13 +1,17 @@
 package com.kor.challenger.config;
 
+import com.kor.challenger.security.jwt.JwtConfigurer;
+import com.kor.challenger.security.jwt.JwtTokenProvider;
 import com.kor.challenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -18,18 +22,50 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    JwtTokenProvider jwtTokenProvider;
+
+    private static final String ADMIN_ENDPOINT = "/pi/v1/admin/**";
+    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Autowired
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userService);
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        /*http
                 .antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/", "/registration", "/login**", "/js/**", "/error**", "/user/**").permitAll()
+                .antMatchers("/", "/registration", "/login**", "/js/**", "/error**", "/user/**").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().logout().logoutSuccessUrl("/").permitAll()
                 .and()
-                .csrf().disable();
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .apply(new JwtConfigurer(jwtTokenProvider));*/
+
+        http.
+                httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/registration*").permitAll()
+                .antMatchers("/", "/registration", "/error**", "/api/v1/auth/login", "/user/**", LOGIN_ENDPOINT).permitAll()
+                .antMatchers(ADMIN_ENDPOINT).hasAnyRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .apply(new JwtConfigurer(jwtTokenProvider));
     }
 
     /*@Override

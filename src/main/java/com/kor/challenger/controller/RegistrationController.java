@@ -3,7 +3,13 @@ package com.kor.challenger.controller;
 import com.kor.challenger.domain.User;
 import com.kor.challenger.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("user")
@@ -28,17 +34,14 @@ public class RegistrationController {
         return new GenericResponse("success");
     }*/
 
-    @GetMapping("registration")
-    public User registerUserAccount() {
+    @PostMapping("registration")
+    public User registerUserAccount(@Valid User user, @RequestParam("file") MultipartFile file){
 
-        System.out.println("hello");
-
-        User user = new User();
-        user.setUsername("username");
-        user.setPassword("password");
+        System.out.println(file.getOriginalFilename());
 
         userService.addUser(user);
 
         return user;
     }
+
 }
