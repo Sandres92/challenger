@@ -13,8 +13,6 @@ public class JwtUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
 
     public JwtUser(Long id, String username, String password, boolean active, Collection<? extends GrantedAuthority> authorities) {
-        System.out.println("================");
-        System.out.println(id);
         this.id = id;
         this.username = username;
         this.password = password;
@@ -24,17 +22,17 @@ public class JwtUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override

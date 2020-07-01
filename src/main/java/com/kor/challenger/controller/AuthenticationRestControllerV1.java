@@ -1,7 +1,11 @@
 package com.kor.challenger.controller;
 
+import com.kor.challenger.domain.RegistrationResponseStatus;
 import com.kor.challenger.domain.User;
 import com.kor.challenger.domain.dto.AuthenticationRequestDto;
+import com.kor.challenger.domain.dto.LoginRequestDto;
+import com.kor.challenger.domain.dto.RegistrationRequestDto;
+import com.kor.challenger.domain.dto.RegistrationResponseDto;
 import com.kor.challenger.repos.UserRepo;
 import com.kor.challenger.security.jwt.JwtTokenProvider;
 import com.kor.challenger.service.UserService;
@@ -13,11 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,23 +44,13 @@ public class AuthenticationRestControllerV1 {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("login")
-    private ResponseEntity login(@RequestBody AuthenticationRequestDto requestDto) {
-        String p = bCryptPasswordEncoder.encode(requestDto.getPassword());
-
-        System.out.println(p);
-
+    private ResponseEntity login(@RequestBody LoginRequestDto loginRequestDto) {
         try {
-            String username = requestDto.getUsername();
-            String username_t = username.trim();
-            User user = userRepo.findByUsername(username);
-
-            UsernamePasswordAuthenticationToken mm = new UsernamePasswordAuthenticationToken(username_t, requestDto.getUsername());
-
-            System.out.println( "aa " + mm.getCredentials());
-            System.out.println( "aa " + mm.getPrincipal());
-            System.out.println( "aa " + mm.getDetails());
-
+            String username = loginRequestDto.getUsername();
+            UsernamePasswordAuthenticationToken mm = new UsernamePasswordAuthenticationToken(username, loginRequestDto.getPassword());
             authenticationManager.authenticate(mm);
+
+            User user = userRepo.findByUsername(username);
 
             if (user == null) {
                 throw new UsernameNotFoundException("user with username: " + username + " not found");
@@ -74,5 +67,21 @@ public class AuthenticationRestControllerV1 {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("invalid username or password");
         }
+    }
+
+    @PostMapping("registration")
+    public RegistrationResponseDto registerUserAccount(@Valid User user) {
+    //public RegistrationResponseDto registerUserAccount(@Valid User user, @RequestParam("file") MultipartFile file) {
+
+        System.out.println("1111 22222 333333");
+        String oldPassword = user.getPassword();
+        String passwordEncoder = "{bcrypt}"+bCryptPasswordEncoder.encode(oldPassword);
+        user.setPassword(passwordEncoder);
+
+        if (!userService.addUser(user)) {
+            return new RegistrationResponseDto(user.getUsername(), oldPassword, RegistrationResponseStatus.NO_CREATED_USER_ALREADY_EXIST);
+        }
+
+        return new RegistrationResponseDto(user.getUsername(), oldPassword, RegistrationResponseStatus.NEW_USER_CREATED);
     }
 }

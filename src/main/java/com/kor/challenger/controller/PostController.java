@@ -2,6 +2,7 @@ package com.kor.challenger.controller;
 
 import com.kor.challenger.domain.Content;
 import com.kor.challenger.domain.Post;
+import com.kor.challenger.domain.dto.PostsResponseDto;
 import com.kor.challenger.exeptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +35,12 @@ public class PostController {
 
     private List<String> pathImageName = new ArrayList<>();
 
-    /*private List<Post> posts = new ArrayList<Post>() {{
+    private List<Post> posts = new ArrayList<Post>() {{
         add(new Post(0L, "One"));
         add(new Post(1L, "Two"));
         add(new Post(2L, "Tree"));
-    }};*/
-    private List<Post> posts = new ArrayList<Post>();
+    }};
+    //private List<Post> posts = new ArrayList<Post>();
 
     @Value("${upload.path}")
     private String uploadPath;
@@ -47,10 +48,10 @@ public class PostController {
     int postCount = 0;
 
     @GetMapping
-    public List<Post> getListPosts() {
+    public PostsResponseDto getListPosts() {
         System.out.println("Get all success");
 
-        return posts;
+        return new PostsResponseDto(posts);
     }
 
     @GetMapping("{id}")
