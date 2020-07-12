@@ -1,9 +1,9 @@
-package com.kor.challenger.domain.dto;
+package com.kor.challenger.domain.dto.requests;
 
 import lombok.Data;
 
 @Data
-public class AuthenticationRequestDto {
+public class RegistrationRequestDto {
     private String username;
     private String password;
 }

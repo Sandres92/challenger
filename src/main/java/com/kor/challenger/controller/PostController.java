@@ -1,8 +1,7 @@
 package com.kor.challenger.controller;
 
-import com.kor.challenger.domain.Content;
 import com.kor.challenger.domain.Post;
-import com.kor.challenger.domain.dto.PostsResponseDto;
+import com.kor.challenger.domain.dto.response.ChallengesResponseDto;
 import com.kor.challenger.exeptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -48,10 +47,10 @@ public class PostController {
     int postCount = 0;
 
     @GetMapping
-    public PostsResponseDto getListPosts() {
+    public ChallengesResponseDto getListPosts() {
         System.out.println("Get all success");
 
-        return new PostsResponseDto(posts);
+        return new ChallengesResponseDto(new ArrayList<>());
     }
 
     @GetMapping("{id}")
@@ -83,11 +82,11 @@ public class PostController {
         long postId = posts.size();
         Post post = new Post(postId, text);
 
-        Content[] postContents = post.getContents();
+        //ChallengeContent[] postChallengeContents = post.getChallengeContents();
         String resultFilename = saveFile(file);
-        postContents[0] = new Content(resultFilename);
+        //postChallengeContents[0] = new ChallengeContent(resultFilename);
 
-        post.setContents(postContents);
+        //post.setChallengeContents(postChallengeContents);
 
         posts.add(post);
 

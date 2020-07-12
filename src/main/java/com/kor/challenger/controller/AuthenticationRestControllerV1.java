@@ -2,10 +2,8 @@ package com.kor.challenger.controller;
 
 import com.kor.challenger.domain.RegistrationResponseStatus;
 import com.kor.challenger.domain.User;
-import com.kor.challenger.domain.dto.AuthenticationRequestDto;
-import com.kor.challenger.domain.dto.LoginRequestDto;
-import com.kor.challenger.domain.dto.RegistrationRequestDto;
-import com.kor.challenger.domain.dto.RegistrationResponseDto;
+import com.kor.challenger.domain.dto.requests.LoginRequestDto;
+import com.kor.challenger.domain.dto.response.RegistrationResponseDto;
 import com.kor.challenger.repos.UserRepo;
 import com.kor.challenger.security.jwt.JwtTokenProvider;
 import com.kor.challenger.service.UserService;
@@ -18,7 +16,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -73,7 +70,6 @@ public class AuthenticationRestControllerV1 {
     public RegistrationResponseDto registerUserAccount(@Valid User user) {
     //public RegistrationResponseDto registerUserAccount(@Valid User user, @RequestParam("file") MultipartFile file) {
 
-        System.out.println("1111 22222 333333");
         String oldPassword = user.getPassword();
         String passwordEncoder = "{bcrypt}"+bCryptPasswordEncoder.encode(oldPassword);
         user.setPassword(passwordEncoder);

@@ -1,4 +1,4 @@
-package com.kor.challenger.domain.dto;
+package com.kor.challenger.domain.dto.response;
 
 import com.kor.challenger.domain.RegistrationResponseStatus;
 import lombok.AllArgsConstructor;

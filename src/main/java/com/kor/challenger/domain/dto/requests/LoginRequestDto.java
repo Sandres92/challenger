@@ -1,4 +1,4 @@
-package com.kor.challenger.domain.dto;
+package com.kor.challenger.domain.dto.requests;
 
 import lombok.Data;
 import lombok.Getter;

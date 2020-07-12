@@ -25,6 +25,10 @@ public class JwtUser implements UserDetails {
         return authorities;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getPassword() {
         return password;

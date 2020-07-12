@@ -1,17 +1,37 @@
 package com.kor.challenger.domain;
 
-public class Post {
-    private Long id;
-    private String text;
-    private Content[] contents;
+import lombok.Data;
 
-    public Post() {
-    }
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+//@Data
+//@Table
+//@Entity
+public class Post {
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    private String text;
+
+    //@OneToMany(mappedBy = "challenge", orphanRemoval = true)
+    //@JoinColumn(name = "user_id")
+    private List<ChallengeContent> challengeContents;
+
+    //@ManyToOne
+    //@JoinColumn(name = "user_id")
+    private User author;
+
+    //@OneToMany(mappedBy = "message", orphanRemoval = true)
+    //@JsonManagedReference //УБЕРАЕТ ЦИКЛИЧЕСКИЕ ССЫЛКИ
+    private List<ChallengeComment> challengeComments;
 
     public Post(Long id, String text) {
         this.id = id;
         this.text = text;
-        contents = new Content[10];
+        challengeContents = new ArrayList<>(10);
     }
 
     public Long getId() {
@@ -30,11 +50,11 @@ public class Post {
         this.text = text;
     }
 
-    public Content[] getContents() {
-        return contents;
+    public List<ChallengeContent> getChallengeContents() {
+        return challengeContents;
     }
 
-    public void setContents(Content[] contents) {
-        this.contents = contents;
+    public void setChallengeContents(List<ChallengeContent> challengeContents) {
+        this.challengeContents = challengeContents;
     }
 }
