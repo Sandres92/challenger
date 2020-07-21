@@ -1,10 +1,7 @@
 package com.kor.challenger.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.kor.challenger.domain.dto.response.ChallengeCommentResponseDto;
-import com.kor.challenger.domain.dto.response.ChallengeContentResponseDto;
-import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
-import com.kor.challenger.domain.dto.response.UserResponseDto;
+import com.kor.challenger.domain.dto.response.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +27,10 @@ public class Challenge {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
 
+    @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime endChallengeDate;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
@@ -40,11 +41,15 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", orphanRemoval = true)
     private List<ChallengeComment> challengeComments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "challenge", orphanRemoval = true)
+    private List<Execution> executions = new ArrayList<>();
+
     public ChallengeResponseDto toChallengeResponseDto() {
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto();
         challengeResponseDto.setId(this.id);
         challengeResponseDto.setText(this.text);
         challengeResponseDto.setCreationDate(this.creationDate);
+        challengeResponseDto.setEndChallengeDate(this.endChallengeDate);
 
         UserResponseDto userResponseDto = author.toUserResponseDto();
         challengeResponseDto.setAuthor(userResponseDto);
@@ -61,6 +66,16 @@ public class Challenge {
         }
         challengeResponseDto.setChallengeComments(commentResponseDtos);
 
+        List<ExecutionResponseDto> executionResponseDtos = new ArrayList<>();
+        for (Execution item : executions) {
+            executionResponseDtos.add(item.toExecutionResponseDto());
+        }
+        challengeResponseDto.setExecutions(executionResponseDtos);
+
         return challengeResponseDto;
+    }
+
+    public void addExecution(Execution execution) {
+        executions.add(execution);
     }
 }

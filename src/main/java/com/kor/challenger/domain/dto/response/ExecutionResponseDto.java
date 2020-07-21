@@ -8,13 +8,12 @@ import java.util.List;
 
 @Setter
 @Getter
-public class ChallengeResponseDto {
+public class ExecutionResponseDto {
     private Long id;
     private String text;
     private LocalDateTime creationDate;
-    private LocalDateTime endChallengeDate;
     private UserResponseDto author;
-    private List<ChallengeContentResponseDto> challengeContents;
-    private List<ChallengeCommentResponseDto> challengeComments;
-    private List<ExecutionResponseDto> executions;
+    private ChallengeMiniResponseDto challengeMini;
+    private List<ExecutionContentResponseDto> executionContents;
+    private List<ExecutionCommentResponseDto> executionComments;
 }

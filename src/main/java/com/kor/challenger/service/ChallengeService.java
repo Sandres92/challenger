@@ -4,7 +4,6 @@ import com.kor.challenger.domain.Challenge;
 import com.kor.challenger.domain.ChallengeContent;
 import com.kor.challenger.domain.User;
 import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
-import com.kor.challenger.repos.ChallengeContentRepo;
 import com.kor.challenger.repos.ChallengeRepo;
 import com.kor.challenger.repos.UserRepo;
 import com.kor.challenger.security.jwt.JwtUser;
@@ -23,16 +22,13 @@ import java.util.List;
 public class ChallengeService {
     private final ChallengeRepo challengeRepo;
     private final FileWriterUtility fileWriterUtility;
-    private final ChallengeContentRepo challengeContentRepo;
     private final UserRepo userRepo;
 
     public ChallengeService(ChallengeRepo challengeRepo,
                             FileWriterUtility fileWriterUtility,
-                            ChallengeContentRepo challengeContentRepo,
                             UserRepo userRepo) {
         this.challengeRepo = challengeRepo;
         this.fileWriterUtility = fileWriterUtility;
-        this.challengeContentRepo = challengeContentRepo;
         this.userRepo = userRepo;
     }
 
@@ -61,6 +57,9 @@ public class ChallengeService {
                                                 JwtUser jwtUser) throws IOException {
         Challenge challenge = new Challenge();
         challenge.setText(text);
+        challenge.setCreationDate(LocalDateTime.now());
+        challenge.setEndChallengeDate(LocalDateTime.now().plusDays(3));
+
         User user = userRepo.findById(jwtUser.getId()).orElse(null);
         challenge.setAuthor(user);
         challenge.setChallengeContents(new ArrayList<>(10));

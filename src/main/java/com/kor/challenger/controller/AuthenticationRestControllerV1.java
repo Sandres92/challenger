@@ -56,6 +56,7 @@ public class AuthenticationRestControllerV1 {
             String token = jwtTokenProvider.createToken(username, user.getRoles());
 
             Map<String, String> response = new HashMap<>();
+            response.put("id", user.getId().toString());
             response.put("username", username);
             response.put("token", token);
 
@@ -75,9 +76,9 @@ public class AuthenticationRestControllerV1 {
         user.setPassword(passwordEncoder);
 
         if (!userService.addUser(user)) {
-            return new RegistrationResponseDto(user.getUsername(), oldPassword, RegistrationResponseStatus.NO_CREATED_USER_ALREADY_EXIST);
+            return new RegistrationResponseDto(user.getId(), user.getUsername(), oldPassword, RegistrationResponseStatus.NO_CREATED_USER_ALREADY_EXIST);
         }
 
-        return new RegistrationResponseDto(user.getUsername(), oldPassword, RegistrationResponseStatus.NEW_USER_CREATED);
+        return new RegistrationResponseDto(user.getId(), user.getUsername(), oldPassword, RegistrationResponseStatus.NEW_USER_CREATED);
     }
 }

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class RegistrationResponseDto {
+    private Long id;
     private String username;
     private String password;
 

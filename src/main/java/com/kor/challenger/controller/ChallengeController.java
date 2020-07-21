@@ -21,7 +21,7 @@ public class ChallengeController {
 
     @GetMapping
     public ChallengesResponseDto getListChallenges() {
-        System.out.println("Get all success");
+        System.out.println("Get all challenges success");
 
         List<Challenge> challenges = challengeService.getAllChallenges();
         return new ChallengesResponseDto(challenges);
