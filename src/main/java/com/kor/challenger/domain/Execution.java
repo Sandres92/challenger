@@ -21,7 +21,7 @@ public class Execution {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String text;
+    private String description;
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
@@ -45,7 +45,7 @@ public class Execution {
     public ExecutionResponseDto toExecutionResponseDto() {
         ExecutionResponseDto executionResponseDto = new ExecutionResponseDto();
         executionResponseDto.setId(this.id);
-        executionResponseDto.setText(this.text);
+        executionResponseDto.setDescription(this.description);
         executionResponseDto.setCreationDate(this.creationDate);
 
         UserResponseDto userResponseDto = author.toUserResponseDto();

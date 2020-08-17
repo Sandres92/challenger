@@ -25,6 +25,8 @@ public class User implements UserDetails {
     //@NotBlank(message = "password can't be empty")
     private String password;
 
+    private String filename;
+
     private boolean active;
     private String activationCode;
 
@@ -72,7 +74,7 @@ public class User implements UserDetails {
         return isActive();
     }
 
-    public UserResponseDto toUserResponseDto(){
-        return new UserResponseDto(this.id, this.username);
+    public UserResponseDto toUserResponseDto() {
+        return new UserResponseDto(this.id, this.username, this.filename);
     }
 }

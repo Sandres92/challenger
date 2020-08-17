@@ -16,12 +16,12 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-public class Challenge {
+public class Challenge { 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String text;
+    private String description;
 
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
@@ -47,7 +47,7 @@ public class Challenge {
     public ChallengeResponseDto toChallengeResponseDto() {
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto();
         challengeResponseDto.setId(this.id);
-        challengeResponseDto.setText(this.text);
+        challengeResponseDto.setDescription(this.description);
         challengeResponseDto.setCreationDate(this.creationDate);
         challengeResponseDto.setEndChallengeDate(this.endChallengeDate);
 

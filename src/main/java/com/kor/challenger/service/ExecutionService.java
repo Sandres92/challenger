@@ -48,7 +48,7 @@ public class ExecutionService {
                                                 MultipartFile file,
                                                 JwtUser jwtUser) throws IOException {
         Execution execution = new Execution();
-        execution.setText(text);
+        execution.setDescription(text);
         execution.setCreationDate(LocalDateTime.now());
 
         User user = userRepo.findById(jwtUser.getId()).orElse(null);

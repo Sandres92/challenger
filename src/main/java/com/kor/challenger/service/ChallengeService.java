@@ -56,7 +56,7 @@ public class ChallengeService {
                                                 MultipartFile file,
                                                 JwtUser jwtUser) throws IOException {
         Challenge challenge = new Challenge();
-        challenge.setText(text);
+        challenge.setDescription(text);
         challenge.setCreationDate(LocalDateTime.now());
         challenge.setEndChallengeDate(LocalDateTime.now().plusDays(3));
 
@@ -75,8 +75,6 @@ public class ChallengeService {
 
         challenge.setChallengeContents(challengeContents);
         Challenge challengeFromDb = challengeRepo.save(challenge);
-
-
 
         return challengeFromDb.toChallengeResponseDto();
     }

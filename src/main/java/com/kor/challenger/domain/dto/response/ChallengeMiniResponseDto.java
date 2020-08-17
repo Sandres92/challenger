@@ -10,18 +10,18 @@ import java.time.LocalDateTime;
 @Getter
 public class ChallengeMiniResponseDto {
     private Long id;
-    private String text;
+    private String description;
     private LocalDateTime creationDate;
     private LocalDateTime endChallengeDate;
     private UserResponseDto author;
-    private ChallengeContentResponseDto challengeContents;
+    private ChallengeContentResponseDto challengeContent;
 
     public ChallengeMiniResponseDto(Challenge challenge) {
         this.id = challenge.getId();
-        this.text = challenge.getText();
+        this.description = challenge.getDescription();
         this.creationDate = challenge.getCreationDate();
         this.endChallengeDate = challenge.getEndChallengeDate();
         this.author = challenge.getAuthor().toUserResponseDto();
-        this.challengeContents = challenge.getChallengeContents().get(0).toChallengeContentResponseDto();
+        this.challengeContent = challenge.getChallengeContents().get(0).toChallengeContentResponseDto();
     }
 }

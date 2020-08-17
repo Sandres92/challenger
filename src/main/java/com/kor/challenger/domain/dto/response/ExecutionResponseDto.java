@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public class ExecutionResponseDto {
     private Long id;
-    private String text;
+    private String description;
     private LocalDateTime creationDate;
     private UserResponseDto author;
     private ChallengeMiniResponseDto challengeMini;
