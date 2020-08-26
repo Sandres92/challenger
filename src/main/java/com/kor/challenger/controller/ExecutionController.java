@@ -2,6 +2,7 @@ package com.kor.challenger.controller;
 
 import com.kor.challenger.domain.Challenge;
 import com.kor.challenger.domain.Execution;
+import com.kor.challenger.domain.dto.requests.ExecutionEditRequestDto;
 import com.kor.challenger.domain.dto.response.ChallengesResponseDto;
 import com.kor.challenger.domain.dto.response.ExecutionResponseDto;
 import com.kor.challenger.domain.dto.response.ExecutionsResponseDto;
@@ -48,5 +49,10 @@ public class ExecutionController {
                                                 @RequestParam("file") MultipartFile file,
                                                 @AuthenticationPrincipal JwtUser jwtUser) throws IOException {
         return executionService.createExecution(challengeFromDb, text, file, jwtUser);
+    }
+
+    @PutMapping("{id}")
+    public ExecutionResponseDto update(@PathVariable("id") Execution executionFromDb, @RequestBody ExecutionEditRequestDto execution) throws IOException {
+        return executionService.update(executionFromDb, execution);
     }
 }

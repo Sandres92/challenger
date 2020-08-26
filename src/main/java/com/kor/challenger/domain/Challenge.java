@@ -44,6 +44,15 @@ public class Challenge {
     @OneToMany(mappedBy = "challenge", orphanRemoval = true)
     private List<Execution> executions = new ArrayList<>();
 
+    /*@OneToMany(mappedBy = "challenge", orphanRemoval = true)
+    private List<Execution> executions1Place = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challenge", orphanRemoval = true)
+    private List<Execution> executions2Place = new ArrayList<>();
+
+    @OneToMany(mappedBy = "challenge", orphanRemoval = true)
+    private List<Execution> executions3Place = new ArrayList<>();*/
+
     public ChallengeResponseDto toChallengeResponseDto() {
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto();
         challengeResponseDto.setId(this.id);

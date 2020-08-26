@@ -23,6 +23,9 @@ public class Execution {
 
     private String description;
 
+    private Short tempWinPlace;
+    private Short winPlace;
+
     @Column(updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime creationDate;
@@ -47,6 +50,10 @@ public class Execution {
         executionResponseDto.setId(this.id);
         executionResponseDto.setDescription(this.description);
         executionResponseDto.setCreationDate(this.creationDate);
+        System.out.print("this.tempWinPlace   " + this.tempWinPlace);
+        System.out.print("this.winPlace   " + this.winPlace);
+        executionResponseDto.setTempWinPlace(this.tempWinPlace);
+        executionResponseDto.setWinPlace(this.winPlace);
 
         UserResponseDto userResponseDto = author.toUserResponseDto();
         executionResponseDto.setAuthor(userResponseDto);

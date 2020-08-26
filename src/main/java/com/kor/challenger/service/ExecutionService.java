@@ -1,6 +1,7 @@
 package com.kor.challenger.service;
 
 import com.kor.challenger.domain.*;
+import com.kor.challenger.domain.dto.requests.ExecutionEditRequestDto;
 import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
 import com.kor.challenger.domain.dto.response.ExecutionResponseDto;
 import com.kor.challenger.repos.ChallengeRepo;
@@ -55,6 +56,8 @@ public class ExecutionService {
         execution.setAuthor(user);
         execution.setExecutionContents(new ArrayList<>(10));
         execution.setExecutionComments(new ArrayList<>());
+        execution.setTempWinPlace((short) -1);
+        execution.setWinPlace((short) -1);
 
         List<ExecutionContent> executionContents = execution.getExecutionContents();
         String resultFilename = fileWriterUtility.saveFile(file);
@@ -74,5 +77,14 @@ public class ExecutionService {
         Challenge updateChallenge = challengeRepo.save(challengeFromDb);
 
         return executionFromDb.toExecutionResponseDto();
+    }
+
+    public ExecutionResponseDto update(Execution executionFromDb, ExecutionEditRequestDto execution) {
+        executionFromDb.setWinPlace(execution.getWinPlace());
+        executionFromDb.setTempWinPlace(execution.getTempWinPlace());
+
+        Execution updateExecution = executionRepo.save(executionFromDb);
+
+        return updateExecution.toExecutionResponseDto();
     }
 }

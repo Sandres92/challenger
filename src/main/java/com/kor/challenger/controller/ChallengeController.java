@@ -1,5 +1,6 @@
 package com.kor.challenger.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.kor.challenger.domain.Challenge;
 import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
 import com.kor.challenger.domain.dto.response.ChallengesResponseDto;

@@ -12,6 +12,8 @@ public class ExecutionResponseDto {
     private Long id;
     private String description;
     private LocalDateTime creationDate;
+    private Short tempWinPlace;
+    private Short winPlace;
     private UserResponseDto author;
     private ChallengeMiniResponseDto challengeMini;
     private List<ExecutionContentResponseDto> executionContents;
