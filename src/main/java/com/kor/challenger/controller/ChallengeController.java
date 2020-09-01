@@ -1,7 +1,8 @@
 package com.kor.challenger.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.kor.challenger.domain.Challenge;
+import com.kor.challenger.domain.dto.requests.EndChallengeRequestDto;
+import com.kor.challenger.domain.dto.response.EndChallengeResponseDto;
 import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
 import com.kor.challenger.domain.dto.response.ChallengesResponseDto;
 import com.kor.challenger.security.jwt.JwtUser;
@@ -43,5 +44,12 @@ public class ChallengeController {
                                                 @RequestParam("file") MultipartFile file,
                                                 @AuthenticationPrincipal JwtUser jwtUser) throws IOException {
         return challengeService.createChallenge(text, file, jwtUser);
+    }
+
+    @PostMapping("{id}/end")
+    public EndChallengeResponseDto chooseWinners(@PathVariable("id") Challenge challengeFromDb,
+                                                 @RequestBody EndChallengeRequestDto endChallengeRequestDto,
+                                                 @AuthenticationPrincipal JwtUser jwtUser) throws IOException {
+        return challengeService.chooseWinners(challengeFromDb, endChallengeRequestDto, jwtUser);
     }
 }

@@ -13,6 +13,7 @@ public class ChallengeResponseDto {
     private String description;
     private LocalDateTime creationDate;
     private LocalDateTime endChallengeDate;
+    private LocalDateTime nowServerTime;
     private UserResponseDto author;
     private List<ChallengeContentResponseDto> challengeContents;
     private List<ChallengeCommentResponseDto> challengeComments;

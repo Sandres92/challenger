@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,7 @@ import java.util.List;
 @Data
 @Setter
 @Getter
-public class Challenge { 
+public class Challenge {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -57,8 +59,10 @@ public class Challenge {
         ChallengeResponseDto challengeResponseDto = new ChallengeResponseDto();
         challengeResponseDto.setId(this.id);
         challengeResponseDto.setDescription(this.description);
+
         challengeResponseDto.setCreationDate(this.creationDate);
         challengeResponseDto.setEndChallengeDate(this.endChallengeDate);
+        challengeResponseDto.setNowServerTime(LocalDateTime.now());
 
         UserResponseDto userResponseDto = author.toUserResponseDto();
         challengeResponseDto.setAuthor(userResponseDto);

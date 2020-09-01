@@ -2,13 +2,18 @@ package com.kor.challenger.service;
 
 import com.kor.challenger.domain.Challenge;
 import com.kor.challenger.domain.ChallengeContent;
+import com.kor.challenger.domain.Execution;
 import com.kor.challenger.domain.User;
+import com.kor.challenger.domain.dto.requests.EndChallengeRequestDto;
+import com.kor.challenger.domain.dto.response.EndChallengeResponseDto;
 import com.kor.challenger.domain.dto.response.ChallengeResponseDto;
 import com.kor.challenger.repos.ChallengeRepo;
+import com.kor.challenger.repos.ExecutionRepo;
 import com.kor.challenger.repos.UserRepo;
 import com.kor.challenger.security.jwt.JwtUser;
 import com.kor.challenger.util.FileWriterUtility;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,13 +26,20 @@ import java.util.List;
 @Slf4j
 public class ChallengeService {
     private final ChallengeRepo challengeRepo;
+    private final ExecutionRepo executionRepo;
+
     private final FileWriterUtility fileWriterUtility;
     private final UserRepo userRepo;
 
+    @Value("${challenger.time-challenge}")
+    private short timeChallenge;
+
     public ChallengeService(ChallengeRepo challengeRepo,
+                            ExecutionRepo executionRepo,
                             FileWriterUtility fileWriterUtility,
                             UserRepo userRepo) {
         this.challengeRepo = challengeRepo;
+        this.executionRepo = executionRepo;
         this.fileWriterUtility = fileWriterUtility;
         this.userRepo = userRepo;
     }
@@ -58,7 +70,7 @@ public class ChallengeService {
         Challenge challenge = new Challenge();
         challenge.setDescription(text);
         challenge.setCreationDate(LocalDateTime.now());
-        challenge.setEndChallengeDate(LocalDateTime.now().plusDays(3));
+        challenge.setEndChallengeDate(LocalDateTime.now().plusHours(timeChallenge));
 
         User user = userRepo.findById(jwtUser.getId()).orElse(null);
         challenge.setAuthor(user);
@@ -77,5 +89,29 @@ public class ChallengeService {
         Challenge challengeFromDb = challengeRepo.save(challenge);
 
         return challengeFromDb.toChallengeResponseDto();
+    }
+
+    public EndChallengeResponseDto chooseWinners(Challenge challengeFromDb,
+                                                 EndChallengeRequestDto endChallengeRequestDto,
+                                                 JwtUser jwtUser) {
+        Execution executionFirst = executionRepo.getOne(endChallengeRequestDto.getFirst());
+        executionFirst.setWinPlace((short) 0);
+        executionRepo.save(executionFirst);
+
+        Execution executionSecond = executionRepo.getOne(endChallengeRequestDto.getSecond());
+        executionSecond.setWinPlace((short) 1);
+        executionRepo.save(executionSecond);
+
+        Execution executionThird = executionRepo.getOne(endChallengeRequestDto.getThird());
+        executionThird.setWinPlace((short) 2);
+        executionRepo.save(executionThird);
+
+        EndChallengeResponseDto endChallengeResponseDto = new EndChallengeResponseDto(
+                challengeFromDb.getId(),
+                executionFirst.getId(),
+                executionSecond.getId(),
+                executionThird.getId());
+
+        return endChallengeResponseDto;
     }
 }

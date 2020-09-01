@@ -50,8 +50,7 @@ public class Execution {
         executionResponseDto.setId(this.id);
         executionResponseDto.setDescription(this.description);
         executionResponseDto.setCreationDate(this.creationDate);
-        System.out.print("this.tempWinPlace   " + this.tempWinPlace);
-        System.out.print("this.winPlace   " + this.winPlace);
+
         executionResponseDto.setTempWinPlace(this.tempWinPlace);
         executionResponseDto.setWinPlace(this.winPlace);
 

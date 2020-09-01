@@ -71,10 +71,8 @@ public class ExecutionService {
         execution.setChallenge(challengeFromDb);
         Execution executionFromDb = executionRepo.save(execution);
 
-        System.out.println(challengeFromDb.getId());
-
         challengeFromDb.addExecution(executionFromDb);
-        Challenge updateChallenge = challengeRepo.save(challengeFromDb);
+        challengeRepo.save(challengeFromDb);
 
         return executionFromDb.toExecutionResponseDto();
     }
